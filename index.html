@@ -75,76 +75,6 @@
       padding: 20px;
       font-size: 14px;
     }
-
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 40px;
-      background: linear-gradient(#2a8cfb, #1060c9);
-      border-top: 2px solid #0a2e6f;
-      box-shadow: inset 0 1px #8cc3ff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 6px;
-    }
-
-    .start-btn {
-      width: 100px;
-      height: 32px;
-      background: linear-gradient(#3a6ea5, #2a4f8a);
-      color: white;
-      font-weight: bold;
-      border: 1px solid #0a2e6f;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-    .start-btn:hover {
-      background: linear-gradient(#4a7ec5, #2a4f8a);
-    }
-
-    .task-items {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 0 10px;
-      overflow-x: auto;
-    }
-
-    .taskbar-btn {
-      background: linear-gradient(#ece9d8, #d4d0c8);
-      border: 1px solid #7f9db9;
-      padding: 3px 8px;
-      font-size: 12px;
-      font-family: Tahoma, sans-serif;
-      border-radius: 2px;
-      cursor: pointer;
-      white-space: nowrap;
-      z-index: 100;
-    }
-
-    .taskbar-btn:hover {
-      background: #ffffff;
-      border-color: #3a6ea5;
-    }
-
-    .system-tray {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 14px;
-      color: white;
-      min-width: 100px;
-      justify-content: flex-end;
-    }
-
-    .tray-icon {
-      width: 20px;
-      height: 20px;
-    }
   </style>
 </head>
 <body>
@@ -164,56 +94,18 @@
     </div>
   </div>
 
-  <!-- Taskbar -->
-  <footer>
-    <button class="start-btn">Start</button>
-    <div class="task-items" id="taskItems"></div>
-    <div class="system-tray">
-      <img src="57d3068a-ef5d-4e93-91e1-7f893ec5e765.png" alt="Network" class="tray-icon">
-      <span id="clock"></span>
-    </div>
-  </footer>
-
   <script>
-    // Clock
-    function updateClock() {
-      const now = new Date();
-      document.getElementById("clock").textContent =
-        now.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-
     // Window elements
     const win = document.getElementById("xpWindow");
     const content = document.getElementById("winContent");
     const minBtn = document.getElementById("minBtn");
     const maxBtn = document.getElementById("maxBtn");
     const closeBtn = document.getElementById("closeBtn");
-    const taskItems = document.getElementById("taskItems");
 
     let isMaximized = false;
     let isDragging = false;
     let offsetX, offsetY;
     let origX = 100, origY = 100, origWidth = 600, origHeight;
-    let taskButton = null;
-
-    // Create taskbar button immediately (always visible)
-    taskButton = document.createElement("button");
-    taskButton.textContent = "Welcome to Meowgli.fyi";
-    taskButton.className = "taskbar-btn";
-    taskButton.onclick = () => {
-      if (win.style.display === "none" || win.classList.contains("hidden")) {
-        // Show window
-        win.style.display = "block";
-        setTimeout(() => win.classList.remove("hidden"), 50);
-      } else {
-        // Hide window
-        win.classList.add("hidden");
-        setTimeout(() => win.style.display = "none", 250);
-      }
-    };
-    taskItems.appendChild(taskButton);
 
     // Dragging
     win.querySelector(".titlebar").addEventListener("mousedown", e => {
