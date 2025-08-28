@@ -10,6 +10,7 @@
       font-family: Tahoma, Verdana, sans-serif;
       background: url('https://i.imgur.com/8IuucQZ.jpeg') no-repeat center center fixed;
       background-size: cover;
+      overflow: hidden;
     }
 
     header {
@@ -22,17 +23,16 @@
     }
 
     .window {
-      margin: 30px auto;
-      max-width: 600px;
-      border: 2px solid #0a2e6f;
-      border-radius: 6px;
-      background: #ece9d8;
-      box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
-      transition: all 0.25s ease, opacity 0.25s ease;
       position: absolute;
       top: 100px;
       left: 100px;
-      opacity: 1;
+      width: 600px;
+      background: #ece9d8;
+      border: 2px solid #0a2e6f;
+      border-radius: 6px;
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+      transition: all 0.25s ease, opacity 0.25s ease;
+      z-index: 10;
     }
 
     .hidden {
@@ -100,7 +100,6 @@
       padding: 0 6px;
     }
 
-    /* Start Button */
     .start-btn {
       width: 100px;
       height: 32px;
@@ -111,7 +110,6 @@
       cursor: default;
     }
 
-    /* Taskbar items expand */
     .task-items {
       flex: 1;
       display: flex;
@@ -121,7 +119,6 @@
       overflow-x: auto;
     }
 
-    /* XP Taskbar Buttons */
     .taskbar-btn {
       background: linear-gradient(#ece9d8, #d4d0c8);
       border: 1px solid #7f9db9;
@@ -131,7 +128,9 @@
       border-radius: 2px;
       cursor: pointer;
       white-space: nowrap;
+      z-index: 100;
     }
+
     .taskbar-btn:hover {
       background: #ffffff;
       border-color: #3a6ea5;
@@ -151,6 +150,7 @@
 <body>
   <header>Windows XP Web</header>
 
+  <!-- XP Window -->
   <div class="window" id="xpWindow">
     <div class="titlebar">
       <span>Welcome to Meowgli.fyi</span>
@@ -183,6 +183,7 @@
     setInterval(updateClock, 1000);
     updateClock();
 
+    // Window elements
     const win = document.getElementById("xpWindow");
     const content = document.getElementById("winContent");
     const minBtn = document.getElementById("minBtn");
@@ -191,7 +192,9 @@
     const taskItems = document.getElementById("taskItems");
 
     let isMaximized = false;
-    let offsetX, offsetY, isDragging = false;
+    let isDragging = false;
+    let offsetX, offsetY;
+    let origX = 100, origY = 100, origWidth = 600, origHeight;
     let taskButton = null;
 
     // Dragging
@@ -199,6 +202,7 @@
       isDragging = true;
       offsetX = e.clientX - win.offsetLeft;
       offsetY = e.clientY - win.offsetTop;
+      win.style.zIndex = ++zIndex;
     });
 
     document.addEventListener("mousemove", e => {
@@ -210,18 +214,37 @@
 
     document.addEventListener("mouseup", () => isDragging = false);
 
+    // Taskbar button creation
+    function addTaskbarButton() {
+      if (!taskButton) {
+        taskButton = document.createElement("button");
+        taskButton.textContent = "Welcome to Meowgli.fyi";
+        taskButton.className = "taskbar-btn";
+        taskButton.onclick = () => {
+          win.style.display = "block";
+          setTimeout(() => win.classList.remove("hidden"), 50);
+          taskButton.remove();
+          taskButton = null;
+        };
+        taskItems.appendChild(taskButton);
+      }
+    }
+
     // Minimize
     minBtn.addEventListener("click", () => {
-      if (!win.classList.contains("hidden")) {
-        win.classList.add("hidden");
-      } else {
-        win.classList.remove("hidden");
-      }
+      win.classList.add("hidden");
+      addTaskbarButton();
+      setTimeout(() => win.style.display = "none", 250);
     });
 
     // Maximize / Restore
     maxBtn.addEventListener("click", () => {
       if (!isMaximized) {
+        origWidth = win.offsetWidth;
+        origHeight = win.offsetHeight;
+        origX = win.offsetLeft;
+        origY = win.offsetTop;
+
         win.style.position = "fixed";
         win.style.top = "0";
         win.style.left = "0";
@@ -232,31 +255,26 @@
         isMaximized = true;
       } else {
         win.style.position = "absolute";
-        win.style.width = "600px";
-        win.style.height = "auto";
+        win.style.top = origY + "px";
+        win.style.left = origX + "px";
+        win.style.width = origWidth + "px";
+        win.style.height = origHeight + "px";
         content.style.height = "auto";
         isMaximized = false;
       }
     });
 
-    // Close -> Add taskbar button
+    // Close
     closeBtn.addEventListener("click", () => {
       win.classList.add("hidden");
-      setTimeout(() => {
-        win.style.display = "none";
-        if (!taskButton) {
-          taskButton = document.createElement("button");
-          taskButton.textContent = "Welcome to Meowgli.fyi";
-          taskButton.className = "taskbar-btn";
-          taskButton.onclick = () => {
-            win.style.display = "block";
-            setTimeout(() => win.classList.remove("hidden"), 50); // smooth fade in
-            taskButton.remove();
-            taskButton = null;
-          };
-          taskItems.appendChild(taskButton);
-        }
-      }, 250); // match animation
+      addTaskbarButton();
+      setTimeout(() => win.style.display = "none", 250);
+    });
+
+    // Z-index for multiple windows
+    let zIndex = 10;
+    win.addEventListener("mousedown", () => {
+      win.style.zIndex = ++zIndex;
     });
   </script>
 </body>
