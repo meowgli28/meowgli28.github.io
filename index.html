@@ -1,4 +1,4 @@
-<!doctype html>
+<!doctype html> 
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -103,11 +103,16 @@
     .start-btn {
       width: 100px;
       height: 32px;
-      background: url("5a1bf967-ad85-4203-92ba-ef4b98c6b446.png") no-repeat;
-      background-position: 0 -32px;
-      background-size: 100px auto;
-      border: none;
-      cursor: default;
+      background: linear-gradient(#3a6ea5, #2a4f8a);
+      color: white;
+      font-weight: bold;
+      border: 1px solid #0a2e6f;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .start-btn:hover {
+      background: linear-gradient(#4a7ec5, #2a4f8a);
     }
 
     .task-items {
@@ -145,6 +150,11 @@
       min-width: 100px;
       justify-content: flex-end;
     }
+
+    .tray-icon {
+      width: 20px;
+      height: 20px;
+    }
   </style>
 </head>
 <body>
@@ -165,10 +175,13 @@
     </div>
   </div>
 
+  <!-- Taskbar -->
   <footer>
-    <button class="start-btn"></button>
+    <button class="start-btn">Start</button>
     <div class="task-items" id="taskItems"></div>
     <div class="system-tray">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/Windows_XP_network_icon.png" 
+           alt="Wi-Fi" class="tray-icon">
       <span id="clock"></span>
     </div>
   </footer>
@@ -197,6 +210,23 @@
     let origX = 100, origY = 100, origWidth = 600, origHeight;
     let taskButton = null;
 
+    // Create taskbar button immediately (always visible)
+    taskButton = document.createElement("button");
+    taskButton.textContent = "Welcome to Meowgli.fyi";
+    taskButton.className = "taskbar-btn";
+    taskButton.onclick = () => {
+      if (win.style.display === "none" || win.classList.contains("hidden")) {
+        // Show window
+        win.style.display = "block";
+        setTimeout(() => win.classList.remove("hidden"), 50);
+      } else {
+        // Hide window
+        win.classList.add("hidden");
+        setTimeout(() => win.style.display = "none", 250);
+      }
+    };
+    taskItems.appendChild(taskButton);
+
     // Dragging
     win.querySelector(".titlebar").addEventListener("mousedown", e => {
       isDragging = true;
@@ -214,26 +244,9 @@
 
     document.addEventListener("mouseup", () => isDragging = false);
 
-    // Taskbar button creation
-    function addTaskbarButton() {
-      if (!taskButton) {
-        taskButton = document.createElement("button");
-        taskButton.textContent = "Welcome to Meowgli.fyi";
-        taskButton.className = "taskbar-btn";
-        taskButton.onclick = () => {
-          win.style.display = "block";
-          setTimeout(() => win.classList.remove("hidden"), 50);
-          taskButton.remove();
-          taskButton = null;
-        };
-        taskItems.appendChild(taskButton);
-      }
-    }
-
     // Minimize
     minBtn.addEventListener("click", () => {
       win.classList.add("hidden");
-      addTaskbarButton();
       setTimeout(() => win.style.display = "none", 250);
     });
 
@@ -267,7 +280,6 @@
     // Close
     closeBtn.addEventListener("click", () => {
       win.classList.add("hidden");
-      addTaskbarButton();
       setTimeout(() => win.style.display = "none", 250);
     });
 
