@@ -1,87 +1,242 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>YOU HAVE BEEN HACKED BY SHREK SQUAD</title>
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #228B22;
-        font-family: "Comic Sans MS", cursive, sans-serif;
-        color: yellow;
-        text-align: center;
-      }
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cat Runner — Visit Counter</title>
+  <style>
+    :root {
+      --bg: #0f1226;
+      --card: #161a36;
+      --text: #e8ecff;
+      --accent: #7aa2ff;
+      --muted: #9aa3b2;
+      --good: #72e6a6;
+    }
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: radial-gradient(1000px 600px at 50% -100px, #1a1f47, var(--bg));
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      overflow: hidden; /* so the cat can run edge-to-edge without scrollbars */
+    }
 
-      h1 {
-        font-size: 3rem;
-        text-shadow: 2px 2px 5px black;
-        margin-top: 20px;
-        position: relative;
-        z-index: 10;
-      }
+    /* Header card */
+    .hud {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(180deg, #1b2150, var(--card));
+      border: 1px solid #2b3270;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.05);
+      border-radius: 16px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--good);
+      box-shadow: 0 0 10px var(--good);
+    }
+    .title {
+      font-weight: 600;
+      letter-spacing: .2px;
+    }
+    .counter {
+      margin-left: 8px;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(122,162,255,.15);
+      border: 1px solid rgba(122,162,255,.35);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .hint {
+      color: var(--muted);
+      font-size: 12px;
+      margin-left: 8px;
+    }
 
-      p {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 10;
-      }
+    /* The Cat */
+    .cat {
+      position: fixed;
+      left: 40px;
+      bottom: 40px;
+      width: 84px;
+      height: 84px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.45));
+    }
+    /* Cat body (a simple stylized SVG) */
+    .cat svg { width: 100%; height: 100%; display: block; }
 
-      .shrek-main {
-        width: 300px;
-        border: 5px solid black;
-        border-radius: 20px;
-        position: relative;
-        z-index: 10;
-      }
+    /* Tiny running “dust” trails */
+    .dust {
+      position: fixed;
+      width: 6px; height: 6px; border-radius: 50%;
+      background: rgba(255,255,255,.7);
+      opacity: 0;
+      pointer-events: none;
+      animation: puff .6s ease-out forwards;
+    }
+    @keyframes puff {
+      0% { transform: translate(0,0) scale(1); opacity: .9; }
+      100% { transform: translate(8px,12px) scale(0); opacity: 0; }
+    }
 
-      .marquee {
-        font-size: 2rem;
-        font-weight: bold;
-        color: yellow;
-        text-shadow: 2px 2px 5px black;
-        position: relative;
-        z-index: 10;
-      }
+    /* Button row (optional) */
+    .actions {
+      position: fixed;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+    }
+    button {
+      background: rgba(122,162,255,.12);
+      color: var(--text);
+      border: 1px solid rgba(122,162,255,.35);
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      backdrop-filter: blur(6px);
+    }
+    button:hover { background: rgba(122,162,255,.18); }
+  </style>
+</head>
+<body>
+  <div class="hud" role="status" aria-live="polite">
+    <div class="dot" aria-hidden="true"></div>
+    <div class="title">Visitors on this device:</div>
+    <div id="visitCount" class="counter">—</div>
+    <div class="hint">(stored locally)</div>
+  </div>
 
-      .shrek-bubble {
-        position: absolute;
-        width: 50px;
-        height: 50px;
-        background-image: url('https://upload.wikimedia.org/wikipedia/en/4/4d/Shrek_%28character%29.png');
-        background-size: cover;
-        pointer-events: none;
-        animation: float 5s linear infinite;
-      }
+  <!-- The running cat (inline SVG, no external assets) -->
+  <div id="cat" class="cat" aria-hidden="true">
+    <svg viewBox="0 0 220 220">
+      <!-- Tail -->
+      <path d="M170 150c30 30 20 50 -10 35" fill="none" stroke="#ffcc88" stroke-width="16" stroke-linecap="round"/>
+      <!-- Body -->
+      <ellipse cx="130" cy="140" rx="62" ry="48" fill="#ffcc88"/>
+      <!-- Back leg -->
+      <ellipse cx="115" cy="175" rx="22" ry="16" fill="#f3b96c"/>
+      <!-- Front leg -->
+      <ellipse cx="165" cy="175" rx="22" ry="16" fill="#f3b96c"/>
+      <!-- Head -->
+      <circle cx="75" cy="120" r="38" fill="#ffcc88"/>
+      <!-- Ears -->
+      <path d="M55 95 L45 70 L68 88 Z" fill="#ffcc88"/>
+      <path d="M95 95 L105 70 L82 88 Z" fill="#ffcc88"/>
+      <!-- Eyes -->
+      <circle cx="63" cy="118" r="6" fill="#222"/>
+      <circle cx="87" cy="118" r="6" fill="#222"/>
+      <!-- Nose -->
+      <circle cx="75" cy="130" r="4" fill="#e07a7a"/>
+      <!-- Whiskers -->
+      <path d="M48 132 l-26 -6 M48 138 l-26 0 M48 144 l-26 6" stroke="#e6d1a2" stroke-width="4" stroke-linecap="round"/>
+      <path d="M102 132 l26 -6 M102 138 l26 0 M102 144 l26 6" stroke="#e6d1a2" stroke-width="4" stroke-linecap="round"/>
+    </svg>
+  </div>
 
-      @keyframes float {
-        0% { transform: translate(0, 0) rotate(0deg); }
-        25% { transform: translate(200px, -100px) rotate(90deg); }
-        50% { transform: translate(-150px, -200px) rotate(180deg); }
-        75% { transform: translate(100px, 150px) rotate(270deg); }
-        100% { transform: translate(0, 0) rotate(360deg); }
-      }
-    </style>
-  </head>
-  <body>
-    <h1>🚨 YOU HAVE BEEN HACKED BY SHREK SQUAD 🚨</h1>
-    <p>Get out of my swamp!</p>
-    <img class="shrek-main" src="https://upload.wikimedia.org/wikipedia/en/4/4d/Shrek_%28character%29.png" alt="Shrek">
-    <marquee class="marquee">SOMEBODY ONCE TOLD ME THE WORLD IS GONNA ROLL ME 🟢💚👹</marquee>
+  <div class="actions">
+    <button id="makeRun">Make the cat run again</button>
+    <button id="reset">Reset local counter</button>
+  </div>
 
-    <script>
-      for (let i = 0; i < 50; i++) {
-        const shrek = document.createElement('div');
-        shrek.classList.add('shrek-bubble');
-        shrek.style.top = Math.random() * window.innerHeight + 'px';
-        shrek.style.left = Math.random() * window.innerWidth + 'px';
-        shrek.style.animationDuration = (3 + Math.random() * 5) + 's';
-        shrek.style.width = shrek.style.height = (30 + Math.random() * 70) + 'px';
-        document.body.appendChild(shrek);
+  <script>
+    // --- Visit Counter (localStorage-based) ---
+    const KEY = "cat-visit-count";
+    const span = document.getElementById("visitCount");
+    const current = Number(localStorage.getItem(KEY) || 0) + 1;
+    localStorage.setItem(KEY, String(current));
+    span.textContent = current.toLocaleString();
+
+    // --- Cat Runner ---
+    const cat = document.getElementById("cat");
+    const runBtn = document.getElementById("makeRun");
+    const resetBtn = document.getElementById("reset");
+
+    function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+    // Create a few dust puffs along the way
+    function puff(x, y) {
+      const d = document.createElement("div");
+      d.className = "dust";
+      d.style.left = x + "px";
+      d.style.top  = y + "px";
+      document.body.appendChild(d);
+      d.addEventListener("animationend", () => d.remove());
+    }
+
+    // Generate a playful path of keyframes across the viewport
+    function makePath(steps = 8, margin = 60) {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const frames = [];
+      let x = Math.random() * (w - margin*2) + margin;
+      let y = Math.random() * (h - margin*2) + margin;
+      frames.push({ transform: `translate(${x}px, ${y}px)` });
+
+      for (let i = 1; i < steps; i++) {
+        const nx = clamp(
+          x + (Math.random() * 2 - 1) * (w * 0.35),
+          margin, w - margin
+        );
+        const ny = clamp(
+          y + (Math.random() * 2 - 1) * (h * 0.35),
+          margin, h - margin
+        );
+        x = nx; y = ny;
+        frames.push({ transform: `translate(${x}px, ${y}px)` });
       }
-    </script>
-  </body>
+      return frames;
+    }
+
+    let currentAnimation;
+    function runCat(duration = 6000) {
+      if (currentAnimation) currentAnimation.cancel();
+      const frames = makePath(10);
+      // Leave a few dust puffs while running
+      const i = setInterval(() => {
+        const rect = cat.getBoundingClientRect();
+        puff(rect.left + rect.width * 0.2, rect.top + rect.height * 0.8);
+      }, 120);
+
+      currentAnimation = cat.animate(frames, {
+        duration,
+        easing: "ease-in-out",
+        iterations: 1,
+        fill: "forwards"
+      });
+      currentAnimation.onfinish = () => clearInterval(i);
+      currentAnimation.oncancel = () => clearInterval(i);
+    }
+
+    // Run on visit (page load)
+    runCat(5000 + Math.random() * 3000);
+
+    // Buttons
+    runBtn.addEventListener("click", () => runCat(4500));
+    resetBtn.addEventListener("click", () => {
+      localStorage.setItem(KEY, "0");
+      span.textContent = "0";
+    });
+
+    // Resize handling: keep cat within bounds after viewport changes
+    window.addEventListener("resize", () => {
+      const rect = cat.getBoundingClientRect();
+      const nx = clamp(rect.left, 20, window.innerWidth - rect.width - 20);
+      const ny = clamp(rect.top,  20, window.innerHeight - rect.height - 20);
+      cat.style.transform = `translate(${nx}px, ${ny}px)`;
+    });
+  </script>
+</body>
 </html>
-
-
