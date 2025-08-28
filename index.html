@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Windows XP Taskbar</title>
+  <title>Windows XP Taskbar with Start Menu</title>
   <style>
     body {
       margin: 0;
@@ -14,7 +14,7 @@
       overflow: hidden;
     }
 
-    /* Taskbar (XP Luna Blue) */
+    /* Taskbar (Luna theme) */
     .taskbar {
       position: fixed;
       bottom: 0;
@@ -28,9 +28,10 @@
       font-size: 13px;
       color: white;
       box-shadow: 0 -2px 4px rgba(0,0,0,0.4);
+      z-index: 1000;
     }
 
-    /* Start button (XP green) */
+    /* Start button */
     .start-button {
       display: flex;
       align-items: center;
@@ -46,6 +47,7 @@
       cursor: pointer;
       box-shadow: inset -1px -1px 2px rgba(0,0,0,0.3),
                   inset 1px 1px 2px rgba(255,255,255,0.3);
+      user-select: none;
     }
 
     .start-button img {
@@ -57,7 +59,7 @@
       background: linear-gradient(#5cb85c, #3a7a3a);
     }
 
-    /* Taskbar buttons */
+    /* Taskbar tabs */
     .taskbar-tabs {
       flex: 1;
       display: flex;
@@ -93,6 +95,62 @@
       width: 18px;
       height: 18px;
     }
+
+    /* Start menu */
+    .start-menu {
+      position: fixed;
+      bottom: 40px;
+      left: 6px;
+      width: 250px;
+      height: 350px;
+      background: #f0f0f0;
+      border: 2px solid #0a2e6f;
+      border-radius: 6px 6px 0 0;
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 999;
+    }
+
+    .start-menu-header {
+      background: linear-gradient(#245edc, #1a47a0);
+      color: white;
+      font-weight: bold;
+      padding: 6px;
+      font-size: 14px;
+    }
+
+    .start-menu-list {
+      flex: 1;
+      background: #ffffff;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .start-menu-list button {
+      background: #ece9d8;
+      border: 1px solid #aaa;
+      padding: 6px;
+      text-align: left;
+      font-size: 13px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    .start-menu-list button:hover {
+      background: #d4d0c8;
+    }
+
+    .start-menu-footer {
+      background: #ece9d8;
+      border-top: 1px solid #aaa;
+      padding: 6px;
+      text-align: center;
+      font-size: 12px;
+    }
   </style>
 </head>
 <body>
@@ -100,7 +158,7 @@
   <!-- Taskbar -->
   <div class="taskbar">
     <!-- Start button -->
-    <div class="start-button">
+    <div class="start-button" id="startBtn">
       <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2002.svg" alt="Start">
       Start
     </div>
@@ -121,5 +179,34 @@
     </div>
   </div>
 
+  <!-- Start Menu -->
+  <div class="start-menu" id="startMenu">
+    <div class="start-menu-header">Windows XP</div>
+    <div class="start-menu-list">
+      <button>Programs</button>
+      <button>My Documents</button>
+      <button>My Pictures</button>
+      <button>My Music</button>
+      <button>Control Panel</button>
+      <button>Run...</button>
+    </div>
+    <div class="start-menu-footer">Turn Off Computer</div>
+  </div>
+
+  <script>
+    const startBtn = document.getElementById("startBtn");
+    const startMenu = document.getElementById("startMenu");
+
+    startBtn.addEventListener("click", () => {
+      startMenu.style.display = startMenu.style.display === "flex" ? "none" : "flex";
+    });
+
+    // Hide start menu if clicking outside
+    document.addEventListener("click", (e) => {
+      if (!startBtn.contains(e.target) && !startMenu.contains(e.target)) {
+        startMenu.style.display = "none";
+      }
+    });
+  </script>
 </body>
 </html>
