@@ -8,7 +8,7 @@
     body {
       margin: 0;
       font-family: Tahoma, Verdana, sans-serif;
-      background: url('https://wallpapercave.com/wp/wp2465927.jpg') no-repeat center center fixed;
+      background: url('https://i.imgur.com/8IuucQZ.jpeg') no-repeat center center fixed;
       background-size: cover;
     }
 
@@ -28,10 +28,17 @@
       border-radius: 6px;
       background: #ece9d8;
       box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
-      transition: all 0.2s ease;
+      transition: all 0.25s ease, opacity 0.25s ease;
       position: absolute;
       top: 100px;
       left: 100px;
+      opacity: 1;
+    }
+
+    .hidden {
+      opacity: 0;
+      transform: scale(0.7) translateY(50px);
+      pointer-events: none;
     }
 
     .titlebar {
@@ -90,7 +97,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 10px;
+      padding: 0 6px;
     }
 
     /* Start Button */
@@ -98,31 +105,36 @@
       width: 100px;
       height: 32px;
       background: url("5a1bf967-ad85-4203-92ba-ef4b98c6b446.png") no-repeat;
-      background-position: 0 -32px; /* middle logo from the sprite */
+      background-position: 0 -32px;
       background-size: 100px auto;
       border: none;
       cursor: default;
     }
 
+    /* Taskbar items expand */
     .task-items {
       flex: 1;
       display: flex;
       align-items: center;
-      padding-left: 10px;
       gap: 5px;
+      padding: 0 10px;
+      overflow-x: auto;
     }
 
+    /* XP Taskbar Buttons */
     .taskbar-btn {
-      background: #ece9d8;
+      background: linear-gradient(#ece9d8, #d4d0c8);
       border: 1px solid #7f9db9;
-      padding: 4px 8px;
+      padding: 3px 8px;
       font-size: 12px;
       font-family: Tahoma, sans-serif;
       border-radius: 2px;
       cursor: pointer;
+      white-space: nowrap;
     }
     .taskbar-btn:hover {
       background: #ffffff;
+      border-color: #3a6ea5;
     }
 
     .system-tray {
@@ -131,6 +143,8 @@
       gap: 10px;
       font-size: 14px;
       color: white;
+      min-width: 100px;
+      justify-content: flex-end;
     }
   </style>
 </head>
@@ -198,7 +212,11 @@
 
     // Minimize
     minBtn.addEventListener("click", () => {
-      content.style.display = content.style.display === "none" ? "block" : "none";
+      if (!win.classList.contains("hidden")) {
+        win.classList.add("hidden");
+      } else {
+        win.classList.remove("hidden");
+      }
     });
 
     // Maximize / Restore
@@ -223,18 +241,22 @@
 
     // Close -> Add taskbar button
     closeBtn.addEventListener("click", () => {
-      win.style.display = "none";
-      if (!taskButton) {
-        taskButton = document.createElement("button");
-        taskButton.textContent = "Welcome to Meowgli.fyi";
-        taskButton.className = "taskbar-btn";
-        taskButton.onclick = () => {
-          win.style.display = "block";
-          taskButton.remove();
-          taskButton = null;
-        };
-        taskItems.appendChild(taskButton);
-      }
+      win.classList.add("hidden");
+      setTimeout(() => {
+        win.style.display = "none";
+        if (!taskButton) {
+          taskButton = document.createElement("button");
+          taskButton.textContent = "Welcome to Meowgli.fyi";
+          taskButton.className = "taskbar-btn";
+          taskButton.onclick = () => {
+            win.style.display = "block";
+            setTimeout(() => win.classList.remove("hidden"), 50); // smooth fade in
+            taskButton.remove();
+            taskButton = null;
+          };
+          taskItems.appendChild(taskButton);
+        }
+      }, 250); // match animation
     });
   </script>
 </body>
