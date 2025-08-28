@@ -1,4 +1,4 @@
-<!doctype html> 
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -8,7 +8,7 @@
     body {
       margin: 0;
       font-family: Tahoma, Verdana, sans-serif;
-      background: url('./images/xp-wallpaper.jpeg') no-repeat center center fixed;
+      background: url('https://i.imgur.com/8IuucQZ.jpeg') no-repeat center center fixed;
       background-size: cover;
       overflow: hidden;
     }
@@ -32,7 +32,7 @@
       pointer-events: none;
     }
 
-    /* New Title Bar */
+    /* Title Bar */
     .title-bar {
       display: flex;
       justify-content: space-between;
@@ -90,8 +90,8 @@
       line-height: 1.1em;
       margin-top: 15px;
       white-space: pre;
-      display: inline-block;
-      text-align: left;
+      display: inline-block; /* keeps ASCII centered */
+      text-align: left;      /* aligns ASCII within itself */
     }
   </style>
 </head>
@@ -108,8 +108,9 @@
       </div>
     </div>
     <div class="content" id="winContent">
-      <p>This is Meowgli.fyi. explore, find easter eggs, and have fun!</p>
-      <pre class="ascii-art">
+      <p>This is Meowgli.fyi. Explore, find easter eggs, and have fun!</p>
+      <figure>
+        <pre class="ascii-art">
     db         db
     dpqb       dp8b
     8b qb_____dp_88
@@ -135,7 +136,9 @@
  \.   .\     <./  ,'. ../
   \_ ,..`.__    _,..,._/
     `\|||/  `--'\|||/'  
-      </pre>
+        </pre>
+        <figcaption>ASCII Art Cat Logo</figcaption>
+      </figure>
     </div>
   </div>
 
@@ -162,8 +165,15 @@
 
     document.addEventListener("mousemove", e => {
       if (isDragging && !isMaximized) {
-        win.style.left = e.clientX - offsetX + "px";
-        win.style.top = e.clientY - offsetY + "px";
+        let newX = e.clientX - offsetX;
+        let newY = e.clientY - offsetY;
+
+        // Prevent window from going off-screen
+        newX = Math.max(0, Math.min(window.innerWidth - win.offsetWidth, newX));
+        newY = Math.max(0, Math.min(window.innerHeight - win.offsetHeight, newY));
+
+        win.style.left = newX + "px";
+        win.style.top = newY + "px";
       }
     });
 
