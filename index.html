@@ -19,7 +19,6 @@
       position: absolute;
       text-align: center;
       width: 64px;
-      cursor: pointer;
       user-select: none;
     }
     .desktop-icon img {
@@ -50,6 +49,8 @@
       border-top: 2px solid #1c4a9e;
       color: white;
     }
+
+    /* Start button */
     .start-button {
       display: flex;
       align-items: center;
@@ -87,6 +88,7 @@
     .start-menu.active {
       display: flex;
     }
+
     .start-content {
       display: flex;
       flex: 1;
@@ -102,6 +104,7 @@
       background: #eaf1fb;
       padding: 6px;
     }
+
     .start-left ul,
     .start-right ul {
       list-style: none;
@@ -128,7 +131,7 @@
       margin-right: 6px;
     }
 
-    /* Footer inside start menu */
+    /* Bottom buttons */
     .start-footer {
       background: linear-gradient(to top, #245edb, #3a6ea5);
       padding: 4px;
@@ -147,8 +150,12 @@
       cursor: pointer;
       color: white;
     }
-    .logoff { background: #f6a828; }
-    .shutdown { background: #d9534f; }
+    .logoff {
+      background: #f6a828;
+    }
+    .shutdown {
+      background: #d9534f;
+    }
     .start-footer img {
       width: 14px;
       height: 14px;
@@ -167,6 +174,8 @@
       height: 16px;
       cursor: pointer;
     }
+
+    /* Clock */
     .clock {
       font-size: 12px;
       margin-left: 6px;
@@ -176,14 +185,14 @@
 <body>
 
   <!-- Desktop icons -->
-  <div class="desktop-icon" id="haIcon" style="top: 50px; left: 50px;">
-    <img src="./images/HA.png" alt="Hardcore Anarchy">
-    <span>Hardcore Anarchy</span>
-  </div>
-
-  <div class="desktop-icon" id="recycleIcon" style="top: 140px; left: 50px;">
+  <div class="desktop-icon" style="top: 50px; left: 50px;">
     <img src="./images/windowsxptrash.png" alt="Recycle Bin">
     <span>Recycle Bin</span>
+  </div>
+
+  <div class="desktop-icon" id="haIcon" style="top: 140px; left: 50px;">
+    <img src="./images/HA.png" alt="Hardcore Anarchy">
+    <span>Hardcore Anarchy</span>
   </div>
 
   <!-- Taskbar -->
@@ -198,11 +207,11 @@
       <div class="start-content">
         <div class="start-left">
           <ul>
-            <li onclick="window.open('https://www.mozilla.org/firefox/', '_blank')">
+            <li ondblclick="window.open('https://www.mozilla.org/firefox/', '_blank')">
               <img src="https://icons.iconarchive.com/icons/papirus-team/papirus-apps/16/firefox-icon.png" alt="Firefox">
               Firefox
             </li>
-            <li onclick="window.open('https://mail.google.com', '_blank')">
+            <li ondblclick="window.open('https://mail.google.com/', '_blank')">
               <img src="https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/16/Gmail-icon.png" alt="Gmail">
               Gmail
             </li>
@@ -244,43 +253,18 @@
   </div>
 
   <script>
-    // Draggable desktop icons
-    function makeDraggable(iconId, link) {
-      const icon = document.getElementById(iconId);
-      let isDragging = false, offsetX, offsetY;
-
-      icon.addEventListener("mousedown", (e) => {
-        isDragging = true;
-        offsetX = e.clientX - icon.offsetLeft;
-        offsetY = e.clientY - icon.offsetTop;
-      });
-
-      document.addEventListener("mousemove", (e) => {
-        if (isDragging) {
-          icon.style.left = e.clientX - offsetX + "px";
-          icon.style.top = e.clientY - offsetY + "px";
-        }
-      });
-
-      document.addEventListener("mouseup", () => {
-        isDragging = false;
-      });
-
-      if (link) {
-        icon.addEventListener("dblclick", () => {
-          window.open(link, "_blank");
-        });
-      }
-    }
-
-    makeDraggable("haIcon", "https://hardcoreanarchy.gay/");
-    makeDraggable("recycleIcon", null);
-
     // Start menu toggle
     const startBtn = document.getElementById("startBtn");
     const startMenu = document.getElementById("startMenu");
+
     startBtn.addEventListener("click", () => {
       startMenu.classList.toggle("active");
+    });
+
+    // Hardcore Anarchy double click
+    const haIcon = document.getElementById("haIcon");
+    haIcon.addEventListener("dblclick", () => {
+      window.open("https://hardcoreanarchy.gay/", "_blank");
     });
 
     // Clock
