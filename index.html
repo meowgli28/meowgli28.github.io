@@ -1,127 +1,104 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Bouncy Cat Emoji Counter</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Windows XP Style Website</title>
   <style>
     body {
       margin: 0;
-      height: 100vh;
-      background: #0f1226;
-      color: #fff;
-      font-family: sans-serif;
-      overflow: hidden;
+      font-family: Tahoma, Verdana, sans-serif;
+      background: linear-gradient(#3a6ea5, #1e4f8a);
+      color: black;
     }
-    .hud {
-      position: fixed;
-      top: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(0,0,0,0.5);
-      border-radius: 12px;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      z-index: 10;
-    }
-    .counter {
-      background: rgba(255,255,255,0.15);
-      border-radius: 20px;
-      padding: 4px 10px;
+
+    /* Taskbar header */
+    header {
+      background: linear-gradient(#2a8cfb, #1060c9);
+      color: white;
+      padding: 6px 12px;
       font-weight: bold;
+      border-bottom: 2px solid #0a2e6f;
+      box-shadow: inset 0 1px #8cc3ff;
     }
-    .cat {
-      position: fixed;
-      font-size: 32px;
-      pointer-events: none;
+
+    /* Window card */
+    .window {
+      margin: 30px auto;
+      max-width: 600px;
+      border: 2px solid #0a2e6f;
+      border-radius: 6px;
+      background: #ece9d8;
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+    }
+
+    .titlebar {
+      background: linear-gradient(#3a6ea5, #2a4f8a);
+      color: white;
+      padding: 4px 8px;
+      font-weight: bold;
+      border-bottom: 1px solid #0a2e6f;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 4px 4px 0 0;
+    }
+
+    .titlebar-buttons {
+      display: flex;
+      gap: 4px;
+    }
+
+    .btn {
+      width: 18px;
+      height: 18px;
+      border: 1px solid #0a2e6f;
+      background: #d4d0c8;
+      text-align: center;
+      font-size: 12px;
+      line-height: 16px;
+      cursor: pointer;
       user-select: none;
-      filter: drop-shadow(0 3px 5px rgba(0,0,0,.5));
     }
-    .dust {
+
+    .content {
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    /* Taskbar footer */
+    footer {
       position: fixed;
-      width: 6px; height: 6px; border-radius: 50%;
-      background: rgba(255,255,255,.7);
-      opacity: 0;
-      pointer-events: none;
-      animation: puff .6s ease-out forwards;
-      z-index: 1;
-    }
-    @keyframes puff {
-      0% { transform: translate(0,0) scale(1); opacity: .9; }
-      100% { transform: translate(8px,12px) scale(0); opacity: 0; }
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(#2a8cfb, #1060c9);
+      color: white;
+      padding: 6px 12px;
+      font-size: 14px;
+      border-top: 2px solid #0a2e6f;
+      box-shadow: inset 0 1px #8cc3ff;
     }
   </style>
 </head>
 <body>
-  <div class="hud">
-    Visitors on this device: <span id="visitCount" class="counter">—</span>
+  <header>Windows XP Web</header>
+
+  <div class="window">
+    <div class="titlebar">
+      <span>My XP Window</span>
+      <div class="titlebar-buttons">
+        <div class="btn">–</div>
+        <div class="btn">□</div>
+        <div class="btn">×</div>
+      </div>
+    </div>
+    <div class="content">
+      <p>Welcome to a website styled like Windows XP!</p>
+      <p>You can add text, links, or anything here inside the "window".</p>
+    </div>
   </div>
 
-  <script>
-    // --- Visit Counter ---
-    const KEY = "cat-visit-count";
-    const span = document.getElementById("visitCount");
-    const current = Number(localStorage.getItem(KEY) || 0) + 1;
-    localStorage.setItem(KEY, String(current));
-    span.textContent = current.toLocaleString();
-
-    // Puff effect
-    function puff(x, y) {
-      const d = document.createElement("div");
-      d.className = "dust";
-      d.style.left = x + "px";
-      d.style.top  = y + "px";
-      document.body.appendChild(d);
-      d.addEventListener("animationend", () => d.remove());
-    }
-
-    // --- Create bouncing cat emojis ---
-    const cats = [];
-    const numCats = 12;
-    const speed = 2.5;
-
-    for (let i = 0; i < numCats; i++) {
-      const cat = document.createElement("div");
-      cat.className = "cat";
-      cat.textContent = "🐱";
-      document.body.appendChild(cat);
-
-      cats.push({
-        el: cat,
-        x: Math.random() * (window.innerWidth - 40),
-        y: Math.random() * (window.innerHeight - 40),
-        vx: (Math.random() > 0.5 ? 1 : -1) * (1 + Math.random() * 1.5),
-        vy: (Math.random() > 0.5 ? 1 : -1) * (1 + Math.random() * 1.5),
-        size: 32
-      });
-    }
-
-    function bounceCats() {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-
-      for (let c of cats) {
-        c.x += c.vx * speed;
-        c.y += c.vy * speed;
-
-        if (c.x <= 0 || c.x + c.size >= w) {
-          c.vx *= -1;
-          puff(c.x, c.y + c.size);
-        }
-        if (c.y <= 0 || c.y + c.size >= h) {
-          c.vy *= -1;
-          puff(c.x + c.size/2, c.y + c.size);
-        }
-
-        c.el.style.transform = `translate(${c.x}px, ${c.y}px)`;
-      }
-
-      requestAnimationFrame(bounceCats);
-    }
-
-    bounceCats();
-  </script>
+  <footer>Start &nbsp; | &nbsp; 12:34 PM</footer>
 </body>
 </html>
