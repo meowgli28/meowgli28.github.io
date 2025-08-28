@@ -61,10 +61,15 @@
     }
 
     .title-bar-controls button {
-      width: 18px;
-      height: 18px;
+      width: 20px;
+      height: 20px;
       border: 1px solid #0a2e6f;
       background: #d4d0c8;
+      font-size: 14px;
+      line-height: 16px;
+      font-weight: bold;
+      text-align: center;
+      padding: 0;
       cursor: pointer;
     }
 
@@ -85,9 +90,9 @@
     <div class="title-bar">
       <div class="title-bar-text">A Title Bar</div>
       <div class="title-bar-controls">
-        <button aria-label="Minimize"></button>
-        <button aria-label="Restore"></button>
-        <button aria-label="Close"></button>
+        <button aria-label="Minimize">–</button>
+        <button aria-label="Restore">□</button>
+        <button aria-label="Close">×</button>
       </div>
     </div>
     <div class="content" id="winContent">
