@@ -14,11 +14,9 @@
       overflow: hidden;
     }
 
-    /* Desktop icon */
+    /* Desktop icons */
     .desktop-icon {
       position: absolute;
-      top: 50px;
-      left: 50px;
       text-align: center;
       width: 64px;
       cursor: pointer;
@@ -91,10 +89,16 @@
 </head>
 <body>
 
-  <!-- Desktop icon -->
-  <div class="desktop-icon" id="haIcon">
+  <!-- Hardcore Anarchy icon -->
+  <div class="desktop-icon" id="haIcon" style="top: 50px; left: 50px;">
     <img src="./images/HA.png" alt="Hardcore Anarchy">
     <span>Hardcore Anarchy</span>
+  </div>
+
+  <!-- Recycle Bin icon -->
+  <div class="desktop-icon" id="recycleIcon" style="top: 140px; left: 50px;">
+    <img src="https://icons.iconarchive.com/icons/tpdkdesign.net/refresh-cl/48/Recycle-Bin-Empty-icon.png" alt="Recycle Bin">
+    <span>Recycle Bin</span>
   </div>
 
   <!-- Taskbar -->
@@ -118,31 +122,39 @@
   </div>
 
   <script>
-    // Make desktop icon draggable
-    const haIcon = document.getElementById("haIcon");
-    let isDragging = false, offsetX, offsetY;
+    // Function to make desktop icons draggable
+    function makeDraggable(iconId, link) {
+      const icon = document.getElementById(iconId);
+      let isDragging = false, offsetX, offsetY;
 
-    haIcon.addEventListener("mousedown", (e) => {
-      isDragging = true;
-      offsetX = e.clientX - haIcon.offsetLeft;
-      offsetY = e.clientY - haIcon.offsetTop;
-    });
+      icon.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        offsetX = e.clientX - icon.offsetLeft;
+        offsetY = e.clientY - icon.offsetTop;
+      });
 
-    document.addEventListener("mousemove", (e) => {
-      if (isDragging) {
-        haIcon.style.left = e.clientX - offsetX + "px";
-        haIcon.style.top = e.clientY - offsetY + "px";
+      document.addEventListener("mousemove", (e) => {
+        if (isDragging) {
+          icon.style.left = e.clientX - offsetX + "px";
+          icon.style.top = e.clientY - offsetY + "px";
+        }
+      });
+
+      document.addEventListener("mouseup", () => {
+        isDragging = false;
+      });
+
+      // Open link on double click
+      if (link) {
+        icon.addEventListener("dblclick", () => {
+          window.open(link, "_blank");
+        });
       }
-    });
+    }
 
-    document.addEventListener("mouseup", () => {
-      isDragging = false;
-    });
-
-    // Open link on double click
-    haIcon.addEventListener("dblclick", () => {
-      window.open("https://hardcoreanarchy.gay/", "_blank");
-    });
+    // Make icons draggable with links
+    makeDraggable("haIcon", "https://hardcoreanarchy.gay/");
+    makeDraggable("recycleIcon", null); // No link for now
 
     // Clock
     function updateClock() {
@@ -159,4 +171,3 @@
   </script>
 </body>
 </html>
-
