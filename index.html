@@ -57,48 +57,88 @@
       bottom: 32px;
       left: 4px;
       width: 480px;
-      height: 400px;
-      background: #f1f1f1;
+      height: 440px;
+      background: #ffffff;
       border: 2px solid #1c4a9e;
       display: none;
+      flex-direction: column;
       box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
     }
     .start-menu.active {
       display: flex;
     }
-    .start-menu .left,
-    .start-menu .right {
-      padding: 6px;
-      overflow-y: auto;
+
+    /* Two columns */
+    .start-content {
+      display: flex;
+      flex: 1;
     }
-    .start-menu .left {
-      width: 60%;
+    .start-left {
+      width: 55%;
       background: #ffffff;
+      padding: 6px;
       border-right: 1px solid #ccc;
     }
-    .start-menu .right {
-      width: 40%;
+    .start-right {
+      width: 45%;
       background: #eaf1fb;
+      padding: 6px;
     }
-    .start-menu h3 {
-      margin: 4px 0;
-      font-size: 13px;
-      color: #1c4a9e;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 2px;
-    }
-    .start-menu ul {
+
+    .start-left ul,
+    .start-right ul {
       list-style: none;
       padding: 0;
       margin: 0;
     }
-    .start-menu ul li {
+    .start-left li,
+    .start-right li {
+      display: flex;
+      align-items: center;
       padding: 4px;
-      cursor: pointer;
       font-size: 13px;
+      cursor: pointer;
     }
-    .start-menu ul li:hover {
+    .start-left li:hover,
+    .start-right li:hover {
       background: #cce0ff;
+    }
+    .start-left li img,
+    .start-right li img {
+      width: 16px;
+      height: 16px;
+      margin-right: 6px;
+    }
+
+    /* Bottom buttons */
+    .start-footer {
+      background: linear-gradient(to top, #245edb, #3a6ea5);
+      padding: 4px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+    .start-footer button {
+      display: flex;
+      align-items: center;
+      border: none;
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+    }
+    .logoff {
+      background: #f6a828;
+    }
+    .shutdown {
+      background: #d9534f;
+    }
+    .start-footer img {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
     }
 
     /* System tray */
@@ -133,28 +173,35 @@
 
     <!-- Start menu -->
     <div class="start-menu" id="startMenu">
-      <div class="left">
-        <h3>Programs</h3>
-        <ul>
-          <li>Internet Explorer</li>
-          <li>Outlook Express</li>
-          <li>Windows Media Player</li>
-          <li>Paint</li>
-          <li>Notepad</li>
-          <li>All Programs →</li>
-        </ul>
+      <div class="start-content">
+        <div class="start-left">
+          <ul>
+            <li><img src="https://icons.iconarchive.com/icons/tatice/cristal-intense/16/Internet-icon.png"> Internet Explorer</li>
+            <li><img src="https://icons.iconarchive.com/icons/mazenl77/ios7-style-metro-ui/16/Mail-icon.png"> E-mail</li>
+            <li><img src="https://icons.iconarchive.com/icons/custom-icon-design/pretty-office-8/16/Resume-icon.png"> My Resume</li>
+            <li><img src="https://icons.iconarchive.com/icons/danleech/simple/16/github-icon.png"> My Github</li>
+            <li><img src="https://icons.iconarchive.com/icons/danleech/simple/16/linkedin-icon.png"> My Linkedin</li>
+            <li><img src="https://icons.iconarchive.com/icons/dakirby309/windows-8-metro/16/Apps-Command-Prompt-Metro-icon.png"> My Work</li>
+            <li><img src="https://icons.iconarchive.com/icons/paomedia/small-n-flat/16/paint-icon.png"> Paint</li>
+          </ul>
+        </div>
+        <div class="start-right">
+          <ul>
+            <li><img src="https://icons.iconarchive.com/icons/dapino/summer-holiday/16/folder-icon.png"> My Documents</li>
+            <li><img src="https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/16/places-folder-recent-icon.png"> My Recent Documents</li>
+            <li><img src="https://icons.iconarchive.com/icons/dapino/summer-holiday/16/folder-picture-icon.png"> My Pictures</li>
+            <li><img src="https://icons.iconarchive.com/icons/dapino/summer-holiday/16/folder-music-icon.png"> My Music</li>
+            <li><img src="https://icons.iconarchive.com/icons/tpdkdesign.net/refresh-cl/16/My-Computer-icon.png"> My Computer</li>
+            <li><img src="https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/16/apps-system-icon.png"> Control Panel</li>
+            <li><img src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/16/help-icon.png"> Help and Support</li>
+            <li><img src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/16/search-icon.png"> Search</li>
+            <li><img src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/16/run-icon.png"> Run...</li>
+          </ul>
+        </div>
       </div>
-      <div class="right">
-        <h3>System</h3>
-        <ul>
-          <li>My Documents</li>
-          <li>My Pictures</li>
-          <li>My Music</li>
-          <li>My Computer</li>
-          <li>Control Panel</li>
-          <li>Help and Support</li>
-          <li>Run...</li>
-        </ul>
+      <div class="start-footer">
+        <button class="logoff"><img src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-1/16/logout-icon.png"> Log Off</button>
+        <button class="shutdown"><img src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-1/16/shutdown-icon.png"> Turn Off Computer</button>
       </div>
     </div>
 
@@ -172,7 +219,7 @@
 
       <!-- GitHub -->
       <a href="https://github.com/meowgli28" target="_blank">
-        <img src="https://icons.iconarchive.com/icons/papirus-team/papirus-apps/16/github-icon.png" alt="GitHub">
+        <img src="https://icons.iconarchive.com/icons/danleech/simple/16/github-icon.png" alt="GitHub">
       </a>
 
       <!-- Clock -->
