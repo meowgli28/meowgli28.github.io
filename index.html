@@ -1,11 +1,85 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>My First GitHub Page</title>
+    <title>YOU HAVE BEEN HACKED BY SHREK SQUAD</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #228B22;
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        color: yellow;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 3rem;
+        text-shadow: 2px 2px 5px black;
+        margin-top: 20px;
+        position: relative;
+        z-index: 10;
+      }
+
+      p {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 10;
+      }
+
+      .shrek-main {
+        width: 300px;
+        border: 5px solid black;
+        border-radius: 20px;
+        position: relative;
+        z-index: 10;
+      }
+
+      .marquee {
+        font-size: 2rem;
+        font-weight: bold;
+        color: yellow;
+        text-shadow: 2px 2px 5px black;
+        position: relative;
+        z-index: 10;
+      }
+
+      .shrek-bubble {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background-image: url('https://upload.wikimedia.org/wikipedia/en/4/4d/Shrek_%28character%29.png');
+        background-size: cover;
+        pointer-events: none;
+        animation: float 5s linear infinite;
+      }
+
+      @keyframes float {
+        0% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(200px, -100px) rotate(90deg); }
+        50% { transform: translate(-150px, -200px) rotate(180deg); }
+        75% { transform: translate(100px, 150px) rotate(270deg); }
+        100% { transform: translate(0, 0) rotate(360deg); }
+      }
+    </style>
   </head>
   <body>
-    <h1>Hello, tsarstalin! 🎉</h1>
-    <p>This site is running on GitHub Pages.</p>
+    <h1>🚨 YOU HAVE BEEN HACKED BY SHREK SQUAD 🚨</h1>
+    <p>Get out of my swamp!</p>
+    <img class="shrek-main" src="https://upload.wikimedia.org/wikipedia/en/4/4d/Shrek_%28character%29.png" alt="Shrek">
+    <marquee class="marquee">SOMEBODY ONCE TOLD ME THE WORLD IS GONNA ROLL ME 🟢💚👹</marquee>
+
+    <script>
+      for (let i = 0; i < 50; i++) {
+        const shrek = document.createElement('div');
+        shrek.classList.add('shrek-bubble');
+        shrek.style.top = Math.random() * window.innerHeight + 'px';
+        shrek.style.left = Math.random() * window.innerWidth + 'px';
+        shrek.style.animationDuration = (3 + Math.random() * 5) + 's';
+        shrek.style.width = shrek.style.height = (30 + Math.random() * 70) + 'px';
+        document.body.appendChild(shrek);
+      }
+    </script>
   </body>
 </html>
-
