@@ -30,7 +30,7 @@
       border-radius: 6px;
       background: #ece9d8;
       box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
-      transition: all 0.3s ease;
+      transition: top 0.15s linear, left 0.15s linear; /* smooth dragging */
     }
 
     .titlebar {
@@ -96,18 +96,56 @@
       padding-left: 6px;
     }
 
-    .start-btn, .capture-btn {
-      background: linear-gradient(#4CAF50, #2E7D32);
+    .start-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: linear-gradient(#6ecf5e, #2E7D32);
       border: 1px solid #0a2e6f;
+      border-radius: 20px 20px 20px 0;
       color: white;
       font-weight: bold;
-      padding: 4px 10px;
-      border-radius: 4px;
-      cursor: pointer;
+      padding: 2px 12px 2px 8px;
+      font-size: 14px;
+      user-select: none;
+      pointer-events: none;
     }
 
-    .start-btn:hover, .capture-btn:hover {
-      background: linear-gradient(#66bb6a, #388e3c);
+    .start-btn img {
+      height: 18px;
+    }
+
+    .capture-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: linear-gradient(#d4d0c8, #aaa);
+      border: 1px solid #0a2e6f;
+      color: black;
+      padding: 4px 10px;
+      border-radius: 4px;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .capture-btn img {
+      height: 18px;
+    }
+
+    .taskbar-apps {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .taskbar-app {
+      background: linear-gradient(#ece9d8, #c8c6b4);
+      border: 1px solid #0a2e6f;
+      border-radius: 4px;
+      padding: 2px 10px;
+      cursor: pointer;
+      color: black;
+      font-size: 13px;
     }
 
     .taskbar-right {
@@ -125,10 +163,9 @@
     .notif-icon {
       width: 20px;
       height: 20px;
-      background: white;
       border-radius: 4px;
-      border: 1px solid #0a2e6f;
-      cursor: pointer;
+      user-select: none;
+      pointer-events: none;
     }
 
     .clock {
@@ -157,13 +194,19 @@
 
   <footer>
     <div class="taskbar-left">
-      <button class="start-btn" id="startBtn">Start</button>
-      <button class="capture-btn" id="captureBtn">Capture</button>
+      <div class="start-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2002%E2%80%932012_%28Multicolored%29.svg" alt="XP Logo">
+        Start
+      </div>
+      <div class="capture-btn">
+        <img src="https://icons.iconarchive.com/icons/martz90/circle/512/camera-icon.png" alt="Camera Icon">
+        Capture
+      </div>
+      <div class="taskbar-apps" id="taskbarApps"></div>
     </div>
     <div class="taskbar-right">
       <div class="notification-area">
-        <div class="notif-icon" title="Network"></div>
-        <div class="notif-icon" title="Volume"></div>
+        <img class="notif-icon" src="https://icons.iconarchive.com/icons/dakirby309/windows-8-metro/256/Apps-Computer-Wifi-icon.png" alt="Network">
       </div>
       <div class="clock" id="clock">--:--</div>
     </div>
@@ -177,8 +220,10 @@
     const closeBtn = document.getElementById("closeBtn");
     const titlebar = document.getElementById("titlebar");
     const clock = document.getElementById("clock");
+    const taskbarApps = document.getElementById("taskbarApps");
 
     let isMaximized = false;
+    let appBtn = null;
 
     // Minimize
     minBtn.addEventListener("click", () => {
@@ -207,9 +252,18 @@
       }
     });
 
-    // Close
+    // Close -> add to taskbar
     closeBtn.addEventListener("click", () => {
       win.style.display = "none";
+      if (!appBtn) {
+        appBtn = document.createElement("div");
+        appBtn.classList.add("taskbar-app");
+        appBtn.textContent = "Welcome to Meowgli.fyi";
+        appBtn.addEventListener("click", () => {
+          win.style.display = "block";
+        });
+        taskbarApps.appendChild(appBtn);
+      }
     });
 
     // Dragging
@@ -230,23 +284,6 @@
         win.style.left = (e.clientX - offsetX) + "px";
         win.style.top = (e.clientY - offsetY) + "px";
       }
-    });
-
-    // Start button
-    document.getElementById("startBtn").addEventListener("click", () => {
-      alert("Start menu would appear here!");
-    });
-
-    // Capture button
-    document.getElementById("captureBtn").addEventListener("click", () => {
-      alert("Capture button clicked! Add screenshot functionality here.");
-    });
-
-    // Notification icons
-    document.querySelectorAll(".notif-icon").forEach(icon => {
-      icon.addEventListener("click", () => {
-        alert(icon.title + " settings would open.");
-      });
     });
 
     // Live clock
