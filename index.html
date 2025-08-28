@@ -56,31 +56,46 @@
       position: fixed;
       bottom: 32px;
       left: 4px;
-      width: 260px;
+      width: 480px;
+      height: 400px;
       background: #f1f1f1;
       border: 2px solid #1c4a9e;
       display: none;
-      flex-direction: column;
       box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
     }
     .start-menu.active {
       display: flex;
     }
-    .start-menu h3 {
-      background: linear-gradient(to right, #245edb, #3a6ea5);
-      color: white;
-      margin: 0;
+    .start-menu .left,
+    .start-menu .right {
       padding: 6px;
-      font-size: 14px;
+      overflow-y: auto;
+    }
+    .start-menu .left {
+      width: 60%;
+      background: #ffffff;
+      border-right: 1px solid #ccc;
+    }
+    .start-menu .right {
+      width: 40%;
+      background: #eaf1fb;
+    }
+    .start-menu h3 {
+      margin: 4px 0;
+      font-size: 13px;
+      color: #1c4a9e;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 2px;
     }
     .start-menu ul {
       list-style: none;
-      padding: 6px;
+      padding: 0;
       margin: 0;
     }
     .start-menu ul li {
       padding: 4px;
       cursor: pointer;
+      font-size: 13px;
     }
     .start-menu ul li:hover {
       background: #cce0ff;
@@ -118,13 +133,29 @@
 
     <!-- Start menu -->
     <div class="start-menu" id="startMenu">
-      <h3>Windows XP</h3>
-      <ul>
-        <li>My Computer</li>
-        <li>Control Panel</li>
-        <li>Documents</li>
-        <li>Run...</li>
-      </ul>
+      <div class="left">
+        <h3>Programs</h3>
+        <ul>
+          <li>Internet Explorer</li>
+          <li>Outlook Express</li>
+          <li>Windows Media Player</li>
+          <li>Paint</li>
+          <li>Notepad</li>
+          <li>All Programs →</li>
+        </ul>
+      </div>
+      <div class="right">
+        <h3>System</h3>
+        <ul>
+          <li>My Documents</li>
+          <li>My Pictures</li>
+          <li>My Music</li>
+          <li>My Computer</li>
+          <li>Control Panel</li>
+          <li>Help and Support</li>
+          <li>Run...</li>
+        </ul>
+      </div>
     </div>
 
     <!-- System tray -->
@@ -134,9 +165,9 @@
         <img src="https://icons.iconarchive.com/icons/danleech/simple/16/youtube-icon.png" alt="YouTube">
       </a>
 
-      <!-- WiFi -->
+      <!-- WiFi (generic, no function) -->
       <button style="background:none;border:none;cursor:pointer;">
-        <img src="https://icons.iconarchive.com/icons/aha-soft/desktop-hardware/16/WiFi-Adapter-icon.png" alt="WiFi">
+        <img src="https://icons.iconarchive.com/icons/icons8/windows-8/16/Networking-Wifi-icon.png" alt="WiFi">
       </button>
 
       <!-- GitHub -->
