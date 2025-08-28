@@ -70,6 +70,92 @@
     .start-button:hover {
       background: linear-gradient(to bottom, #4c82d3, #2a4f8a);
     }
+
+    /* Start menu */
+    .start-menu {
+      position: fixed;
+      bottom: 32px;
+      left: 4px;
+      width: 480px;
+      height: 400px;
+      background: #ffffff;
+      border: 2px solid #1c4a9e;
+      display: none;
+      flex-direction: column;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    }
+    .start-menu.active {
+      display: flex;
+    }
+    .start-content {
+      display: flex;
+      flex: 1;
+    }
+    .start-left {
+      width: 55%;
+      background: #ffffff;
+      padding: 6px;
+      border-right: 1px solid #ccc;
+    }
+    .start-right {
+      width: 45%;
+      background: #eaf1fb;
+      padding: 6px;
+    }
+    .start-left ul,
+    .start-right ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .start-left li,
+    .start-right li {
+      display: flex;
+      align-items: center;
+      padding: 4px;
+      font-size: 13px;
+      cursor: pointer;
+      color: black;
+    }
+    .start-left li:hover,
+    .start-right li:hover {
+      background: #cce0ff;
+    }
+    .start-left li img,
+    .start-right li img {
+      width: 16px;
+      height: 16px;
+      margin-right: 6px;
+    }
+
+    /* Footer inside start menu */
+    .start-footer {
+      background: linear-gradient(to top, #245edb, #3a6ea5);
+      padding: 4px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+    .start-footer button {
+      display: flex;
+      align-items: center;
+      border: none;
+      border-radius: 3px;
+      padding: 2px 6px;
+      font-size: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+    }
+    .logoff { background: #f6a828; }
+    .shutdown { background: #d9534f; }
+    .start-footer img {
+      width: 14px;
+      height: 14px;
+      margin-right: 4px;
+    }
+
+    /* System tray */
     .system-tray {
       display: flex;
       align-items: center;
@@ -89,13 +175,12 @@
 </head>
 <body>
 
-  <!-- Hardcore Anarchy icon -->
+  <!-- Desktop icons -->
   <div class="desktop-icon" id="haIcon" style="top: 50px; left: 50px;">
     <img src="./images/HA.png" alt="Hardcore Anarchy">
     <span>Hardcore Anarchy</span>
   </div>
 
-  <!-- Recycle Bin icon -->
   <div class="desktop-icon" id="recycleIcon" style="top: 140px; left: 50px;">
     <img src="./images/windowsxptrash.png" alt="Recycle Bin">
     <span>Recycle Bin</span>
@@ -107,6 +192,43 @@
       <img src="https://win98icons.alexmeub.com/icons/png/windows-0.png" alt="Start">
       Start
     </div>
+
+    <!-- Start menu -->
+    <div class="start-menu" id="startMenu">
+      <div class="start-content">
+        <div class="start-left">
+          <ul>
+            <li onclick="window.open('https://www.mozilla.org/firefox/', '_blank')">
+              <img src="https://icons.iconarchive.com/icons/papirus-team/papirus-apps/16/firefox-icon.png" alt="Firefox">
+              Firefox
+            </li>
+            <li onclick="window.open('https://mail.google.com', '_blank')">
+              <img src="https://icons.iconarchive.com/icons/dtafalonso/android-lollipop/16/Gmail-icon.png" alt="Gmail">
+              Gmail
+            </li>
+          </ul>
+        </div>
+        <div class="start-right">
+          <ul>
+            <li><img src="https://icons.iconarchive.com/icons/dapino/summer-holiday/16/folder-icon.png"> My Documents</li>
+            <li><img src="https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/16/places-folder-recent-icon.png"> My Recent Documents</li>
+            <li><img src="https://icons.iconarchive.com/icons/dapino/summer-holiday/16/folder-picture-icon.png"> My Pictures</li>
+            <li><img src="https://icons.iconarchive.com/icons/dapino/summer-holiday/16/folder-music-icon.png"> My Music</li>
+            <li><img src="https://icons.iconarchive.com/icons/tpdkdesign.net/refresh-cl/16/My-Computer-icon.png"> My Computer</li>
+            <li><img src="https://icons.iconarchive.com/icons/oxygen-icons.org/oxygen/16/apps-system-icon.png"> Control Panel</li>
+            <li><img src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/16/help-icon.png"> Help and Support</li>
+            <li><img src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/16/search-icon.png"> Search</li>
+            <li><img src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-2/16/run-icon.png"> Run...</li>
+          </ul>
+        </div>
+      </div>
+      <div class="start-footer">
+        <button class="logoff"><img src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-1/16/logout-icon.png"> Log Off</button>
+        <button class="shutdown"><img src="https://icons.iconarchive.com/icons/custom-icon-design/flatastic-1/16/shutdown-icon.png"> Turn Off Computer</button>
+      </div>
+    </div>
+
+    <!-- System tray -->
     <div class="system-tray">
       <a href="https://www.youtube.com/@butters6634" target="_blank">
         <img src="https://icons.iconarchive.com/icons/danleech/simple/16/youtube-icon.png" alt="YouTube">
@@ -122,7 +244,7 @@
   </div>
 
   <script>
-    // Function to make desktop icons draggable
+    // Draggable desktop icons
     function makeDraggable(iconId, link) {
       const icon = document.getElementById(iconId);
       let isDragging = false, offsetX, offsetY;
@@ -144,7 +266,6 @@
         isDragging = false;
       });
 
-      // Open link on double click
       if (link) {
         icon.addEventListener("dblclick", () => {
           window.open(link, "_blank");
@@ -152,9 +273,15 @@
       }
     }
 
-    // Make icons draggable with links
     makeDraggable("haIcon", "https://hardcoreanarchy.gay/");
-    makeDraggable("recycleIcon", null); // No link for now
+    makeDraggable("recycleIcon", null);
+
+    // Start menu toggle
+    const startBtn = document.getElementById("startBtn");
+    const startMenu = document.getElementById("startMenu");
+    startBtn.addEventListener("click", () => {
+      startMenu.classList.toggle("active");
+    });
 
     // Clock
     function updateClock() {
@@ -171,6 +298,3 @@
   </script>
 </body>
 </html>
-
-
-
