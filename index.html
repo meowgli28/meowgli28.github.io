@@ -3,16 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Windows XP Style Website</title>
+  <title>Windows XP Web</title>
   <style>
     body {
       margin: 0;
       font-family: Tahoma, Verdana, sans-serif;
-      background: linear-gradient(#3a6ea5, #1e4f8a);
-      color: black;
+      /* Pixelated Azul XP background (sky + grass) */
+      background: url('https://i.imgur.com/9qP6W9Y.png');
+      background-size: cover;
+      image-rendering: pixelated; /* 8-bit look */
     }
 
-    /* Taskbar header */
     header {
       background: linear-gradient(#2a8cfb, #1060c9);
       color: white;
@@ -22,7 +23,6 @@
       box-shadow: inset 0 1px #8cc3ff;
     }
 
-    /* Window card */
     .window {
       margin: 30px auto;
       max-width: 600px;
@@ -30,6 +30,8 @@
       border-radius: 6px;
       background: #ece9d8;
       box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+      transition: all 0.3s ease;
+      position: relative;
     }
 
     .titlebar {
@@ -42,6 +44,7 @@
       justify-content: space-between;
       align-items: center;
       border-radius: 4px 4px 0 0;
+      cursor: move;
     }
 
     .titlebar-buttons {
@@ -61,12 +64,15 @@
       user-select: none;
     }
 
+    .btn:hover {
+      background: #ffffff;
+    }
+
     .content {
       padding: 20px;
       font-size: 14px;
     }
 
-    /* Taskbar footer */
     footer {
       position: fixed;
       bottom: 0;
@@ -84,21 +90,64 @@
 <body>
   <header>Windows XP Web</header>
 
-  <div class="window">
+  <div class="window" id="xpWindow">
     <div class="titlebar">
       <span>My XP Window</span>
       <div class="titlebar-buttons">
-        <div class="btn">–</div>
-        <div class="btn">□</div>
-        <div class="btn">×</div>
+        <div class="btn" id="minBtn">–</div>
+        <div class="btn" id="maxBtn">□</div>
+        <div class="btn" id="closeBtn">×</div>
       </div>
     </div>
-    <div class="content">
-      <p>Welcome to a website styled like Windows XP!</p>
-      <p>You can add text, links, or anything here inside the "window".</p>
+    <div class="content" id="winContent">
+      <p>Welcome to a website styled like Windows XP, with interactive buttons!</p>
+      <p>Try minimizing, maximizing, or closing this window.</p>
     </div>
   </div>
 
   <footer>Start &nbsp; | &nbsp; 12:34 PM</footer>
+
+  <script>
+    const win = document.getElementById("xpWindow");
+    const content = document.getElementById("winContent");
+    const minBtn = document.getElementById("minBtn");
+    const maxBtn = document.getElementById("maxBtn");
+    const closeBtn = document.getElementById("closeBtn");
+
+    let isMaximized = false;
+
+    minBtn.addEventListener("click", () => {
+      if (content.style.display === "none") {
+        content.style.display = "block";
+      } else {
+        content.style.display = "none";
+      }
+    });
+
+    maxBtn.addEventListener("click", () => {
+      if (!isMaximized) {
+        win.style.position = "fixed";
+        win.style.top = "0";
+        win.style.left = "0";
+        win.style.width = "100%";
+        win.style.height = "100%";
+        win.style.margin = "0";
+        content.style.height = "calc(100% - 28px)";
+        content.style.overflow = "auto";
+        isMaximized = true;
+      } else {
+        win.style.position = "relative";
+        win.style.width = "600px";
+        win.style.height = "auto";
+        win.style.margin = "30px auto";
+        content.style.height = "auto";
+        isMaximized = false;
+      }
+    });
+
+    closeBtn.addEventListener("click", () => {
+      win.style.display = "none";
+    });
+  </script>
 </body>
 </html>
