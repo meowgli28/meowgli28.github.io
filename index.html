@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Windows XP Taskbar with Start Menu</title>
+  <title>Windows XP Web</title>
   <style>
     body {
       margin: 0;
@@ -14,20 +14,20 @@
       overflow: hidden;
     }
 
-    /* Taskbar (Luna theme) */
+    /* Taskbar */
     .taskbar {
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
       height: 40px;
-      background: linear-gradient(#245edc, #1a47a0);
-      border-top: 2px solid #0a2e6f;
+      background: linear-gradient(#3a6ea5, #245edc);
+      border-top: 2px solid #1a47a0;
       display: flex;
       align-items: center;
       font-size: 13px;
       color: white;
-      box-shadow: 0 -2px 4px rgba(0,0,0,0.4);
+      box-shadow: 0 -2px 6px rgba(0,0,0,0.5) inset;
       z-index: 1000;
     }
 
@@ -36,27 +36,25 @@
       display: flex;
       align-items: center;
       gap: 6px;
-      background: linear-gradient(#4ea24e, #317031);
+      background: linear-gradient(#5db85d, #317031);
       border: 2px solid #0a2e6f;
-      border-radius: 6px;
+      border-radius: 20px 0 0 0;
       margin: 0 6px;
-      padding: 4px 14px;
+      padding: 4px 16px;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 15px;
       color: white;
       cursor: pointer;
       box-shadow: inset -1px -1px 2px rgba(0,0,0,0.3),
                   inset 1px 1px 2px rgba(255,255,255,0.3);
       user-select: none;
     }
-
     .start-button img {
       width: 18px;
       height: 18px;
     }
-
     .start-button:hover {
-      background: linear-gradient(#5cb85c, #3a7a3a);
+      background: linear-gradient(#6cc76c, #3a7a3a);
     }
 
     /* Taskbar tabs */
@@ -67,7 +65,6 @@
       gap: 6px;
       padding: 0 6px;
     }
-
     .tab {
       background: #ece9d8;
       border: 1px solid #888;
@@ -78,7 +75,6 @@
       cursor: pointer;
       box-shadow: inset 1px 1px white, inset -1px -1px #bbb;
     }
-
     .tab:hover {
       background: #ffffff;
     }
@@ -90,12 +86,10 @@
       gap: 8px;
       padding-right: 12px;
     }
-
     .system-tray img {
       width: 18px;
       height: 18px;
     }
-
     .clock {
       font-size: 12px;
       font-weight: bold;
@@ -108,8 +102,8 @@
       position: fixed;
       bottom: 40px;
       left: 6px;
-      width: 250px;
-      height: 350px;
+      width: 420px;
+      height: 440px;
       background: #f0f0f0;
       border: 2px solid #0a2e6f;
       border-radius: 6px 6px 0 0;
@@ -119,16 +113,18 @@
       overflow: hidden;
       z-index: 999;
     }
-
     .start-menu-header {
-      background: linear-gradient(#245edc, #1a47a0);
+      background: linear-gradient(#3a6ea5, #245edc);
       color: white;
       font-weight: bold;
-      padding: 6px;
+      padding: 8px;
       font-size: 14px;
     }
-
-    .start-menu-list {
+    .start-menu-body {
+      display: flex;
+      flex: 1;
+    }
+    .start-menu-left {
       flex: 1;
       background: #ffffff;
       padding: 6px;
@@ -136,27 +132,49 @@
       flex-direction: column;
       gap: 4px;
     }
-
-    .start-menu-list button {
+    .start-menu-right {
+      width: 160px;
+      background: #e4ecf7;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .menu-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       background: #ece9d8;
       border: 1px solid #aaa;
       padding: 6px;
-      text-align: left;
       font-size: 13px;
       border-radius: 3px;
       cursor: pointer;
     }
-
-    .start-menu-list button:hover {
+    .menu-item img {
+      width: 18px;
+      height: 18px;
+    }
+    .menu-item:hover {
       background: #d4d0c8;
     }
-
     .start-menu-footer {
       background: #ece9d8;
       border-top: 1px solid #aaa;
       padding: 6px;
-      text-align: center;
-      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .start-menu-footer button {
+      background: #ece9d8;
+      border: 1px solid #aaa;
+      padding: 6px 12px;
+      font-size: 13px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .start-menu-footer button:hover {
+      background: #d4d0c8;
     }
   </style>
 </head>
@@ -172,25 +190,14 @@
 
     <!-- Taskbar tabs -->
     <div class="taskbar-tabs">
-      <div class="tab">My Computer</div>
-      <div class="tab">Internet Explorer</div>
+      <div class="tab">Quick Start Guide</div>
     </div>
 
     <!-- System tray -->
     <div class="system-tray">
-      <!-- GitHub -->
-      <a href="https://github.com/meowgli28" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/2111/2111432.png" alt="GitHub">
-      </a>
-      <!-- YouTube -->
-      <a href="https://www.youtube.com/@butters6634" target="_blank">
-        <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
-      </a>
-      <!-- WiFi button (no function) -->
       <button style="background:none;border:none;cursor:pointer;">
         <img src="https://cdn-icons-png.flaticon.com/512/93/93158.png" alt="WiFi">
       </button>
-      <!-- Clock -->
       <span class="clock" id="clock">--:--</span>
     </div>
   </div>
@@ -198,15 +205,30 @@
   <!-- Start Menu -->
   <div class="start-menu" id="startMenu">
     <div class="start-menu-header">Windows XP</div>
-    <div class="start-menu-list">
-      <button>Programs</button>
-      <button>My Documents</button>
-      <button>My Pictures</button>
-      <button>My Music</button>
-      <button>Control Panel</button>
-      <button>Run...</button>
+    <div class="start-menu-body">
+      <!-- Left column -->
+      <div class="start-menu-left">
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/732/732207.png"> Internet Explorer</div>
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/561/561127.png"> Email</div>
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111432.png"> My Github</div>
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png"> Paint</div>
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/2087/2087813.png"> Run...</div>
+      </div>
+      <!-- Right column -->
+      <div class="start-menu-right">
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/716/716784.png"> My Documents</div>
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/337/337946.png"> My Pictures</div>
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/81/81565.png"> My Music</div>
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/3190/3190617.png"> My Computer</div>
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/2099/2099058.png"> Control Panel</div>
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/564/564619.png"> Help and Support</div>
+        <div class="menu-item"><img src="https://cdn-icons-png.flaticon.com/512/64/64673.png"> Search</div>
+      </div>
     </div>
-    <div class="start-menu-footer">Turn Off Computer</div>
+    <div class="start-menu-footer">
+      <button>Log Off</button>
+      <button>Turn Off Computer</button>
+    </div>
   </div>
 
   <script>
