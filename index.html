@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Bouncy Cat Counter</title>
+  <title>Bouncy Cat Emoji Counter</title>
   <style>
     body {
       margin: 0;
@@ -34,10 +34,10 @@
     }
     .cat {
       position: fixed;
-      width: 120px;
-      height: auto;
+      font-size: 32px;
       pointer-events: none;
-      filter: drop-shadow(0 10px 18px rgba(0,0,0,.45));
+      user-select: none;
+      filter: drop-shadow(0 3px 5px rgba(0,0,0,.5));
     }
     .dust {
       position: fixed;
@@ -59,8 +59,6 @@
     Visitors on this device: <span id="visitCount" class="counter">—</span>
   </div>
 
-  <img id="cat" class="cat" alt="Random cat bouncing around" />
-
   <script>
     // --- Visit Counter ---
     const KEY = "cat-visit-count";
@@ -68,8 +66,6 @@
     const current = Number(localStorage.getItem(KEY) || 0) + 1;
     localStorage.setItem(KEY, String(current));
     span.textContent = current.toLocaleString();
-
-    const cat = document.getElementById("cat");
 
     // Puff effect
     function puff(x, y) {
@@ -81,48 +77,51 @@
       d.addEventListener("animationend", () => d.remove());
     }
 
-    // --- Bouncing Cat Logic ---
-    let x = 100, y = 100;
-    let vx = 3, vy = 2; // speed
-    const speed = 3.5;
+    // --- Create bouncing cat emojis ---
+    const cats = [];
+    const numCats = 12;
+    const speed = 2.5;
 
-    function bounceCat() {
+    for (let i = 0; i < numCats; i++) {
+      const cat = document.createElement("div");
+      cat.className = "cat";
+      cat.textContent = "🐱";
+      document.body.appendChild(cat);
+
+      cats.push({
+        el: cat,
+        x: Math.random() * (window.innerWidth - 40),
+        y: Math.random() * (window.innerHeight - 40),
+        vx: (Math.random() > 0.5 ? 1 : -1) * (1 + Math.random() * 1.5),
+        vy: (Math.random() > 0.5 ? 1 : -1) * (1 + Math.random() * 1.5),
+        size: 32
+      });
+    }
+
+    function bounceCats() {
       const w = window.innerWidth;
       const h = window.innerHeight;
-      const rect = cat.getBoundingClientRect();
-      const cw = rect.width || 120;
-      const ch = rect.height || 120;
 
-      x += vx * speed;
-      y += vy * speed;
+      for (let c of cats) {
+        c.x += c.vx * speed;
+        c.y += c.vy * speed;
 
-      if (x <= 0 || x + cw >= w) {
-        vx *= -1;
-        puff(x, y + ch * 0.8);
+        if (c.x <= 0 || c.x + c.size >= w) {
+          c.vx *= -1;
+          puff(c.x, c.y + c.size);
+        }
+        if (c.y <= 0 || c.y + c.size >= h) {
+          c.vy *= -1;
+          puff(c.x + c.size/2, c.y + c.size);
+        }
+
+        c.el.style.transform = `translate(${c.x}px, ${c.y}px)`;
       }
-      if (y <= 0 || y + ch >= h) {
-        vy *= -1;
-        puff(x + cw * 0.5, y + ch);
-      }
 
-      cat.style.transform = `translate(${x}px, ${y}px)`;
-      requestAnimationFrame(bounceCat);
+      requestAnimationFrame(bounceCats);
     }
 
-    // --- Load a random cat image then start bouncing ---
-    async function loadCatAndBounce() {
-      try {
-        const res = await fetch("https://api.thecatapi.com/v1/images/search");
-        const data = await res.json();
-        const url = data[0].url;
-        cat.src = url;
-        cat.onload = () => bounceCat();
-      } catch (err) {
-        console.error("Cat API error", err);
-      }
-    }
-
-    loadCatAndBounce();
+    bounceCats();
   </script>
 </body>
 </html>
