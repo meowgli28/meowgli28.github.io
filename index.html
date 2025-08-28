@@ -2,218 +2,107 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Windows XP Web</title>
   <style>
     body {
       margin: 0;
+      height: 100vh;
       font-family: Tahoma, Verdana, sans-serif;
       background: url('https://i.imgur.com/8IuucQZ.jpeg') no-repeat center center fixed;
       background-size: cover;
       overflow: hidden;
     }
 
-    .window {
-      position: absolute;
-      top: 100px;
-      left: 100px;
-      width: 600px;
-      background: #ece9d8;
-      border: 2px solid #0a2e6f;
-      border-radius: 6px;
-      box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
-      transition: all 0.25s ease, opacity 0.25s ease;
-      z-index: 10;
-    }
-
-    .hidden {
-      opacity: 0;
-      transform: scale(0.7) translateY(50px);
-      pointer-events: none;
-    }
-
-    /* New Title Bar */
-    .title-bar {
+    /* Taskbar */
+    .taskbar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: linear-gradient(#245edc, #1a47a0);
+      border-top: 2px solid #0a2e6f;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      background: linear-gradient(#3a6ea5, #2a4f8a);
+      padding: 0 8px;
       color: white;
-      font-weight: bold;
-      padding: 4px 8px;
-      border-bottom: 1px solid #0a2e6f;
-      border-radius: 4px 4px 0 0;
-      user-select: none;
-      cursor: grab;
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.4);
     }
 
-    .title-bar:active {
-      cursor: grabbing;
-    }
-
-    .title-bar-text {
-      font-size: 14px;
-    }
-
-    .title-bar-controls {
+    /* Start button */
+    .start-button {
       display: flex;
-      gap: 4px;
-    }
-
-    .title-bar-controls button {
-      width: 20px;
-      height: 20px;
-      border: 1px solid #0a2e6f;
-      background: #d4d0c8;
-      font-size: 14px;
-      line-height: 16px;
+      align-items: center;
+      background: linear-gradient(#4ea24e, #317031);
+      border: 2px solid #0a2e6f;
+      border-radius: 4px;
+      padding: 4px 12px;
       font-weight: bold;
-      text-align: center;
-      padding: 0;
+      font-size: 14px;
+      color: white;
       cursor: pointer;
+      margin-right: 12px;
     }
 
-    .title-bar-controls button:hover {
+    .start-button:hover {
+      background: linear-gradient(#5cb85c, #3a7a3a);
+    }
+
+    /* Taskbar apps (empty tabs look) */
+    .taskbar-tabs {
+      display: flex;
+      flex: 1;
+      gap: 6px;
+    }
+
+    .tab {
+      background: #d4d0c8;
+      border: 1px solid #888;
+      border-radius: 2px;
+      padding: 4px 10px;
+      color: black;
+      font-size: 13px;
+      cursor: pointer;
+      box-shadow: inset 1px 1px white;
+    }
+
+    .tab:hover {
       background: #ffffff;
     }
 
-    .content {
-      padding: 20px;
-      font-size: 14px;
-      white-space: pre-wrap;
-      text-align: center;
+    /* System tray (right side) */
+    .system-tray {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
     }
 
-    .ascii-art {
-      font-family: monospace;
-      font-size: 12px;
-      line-height: 1.1em;
-      margin-top: 15px;
-      white-space: pre;
-      display: inline-block; /* keeps the ASCII art block centered */
-      text-align: left;      /* keep ASCII aligned within itself */
+    .tray-icon {
+      width: 16px;
+      height: 16px;
+      background: white;
+      border: 1px solid #333;
+      border-radius: 3px;
     }
   </style>
 </head>
 <body>
 
-  <!-- XP Window -->
-  <div class="window" id="xpWindow">
-    <div class="title-bar">
-      <div class="title-bar-text">A Title Bar</div>
-      <div class="title-bar-controls">
-        <button aria-label="Minimize">–</button>
-        <button aria-label="Restore">□</button>
-        <button aria-label="Close">×</button>
-      </div>
+  <!-- Taskbar -->
+  <div class="taskbar">
+    <div class="start-button">Start</div>
+    <div class="taskbar-tabs">
+      <div class="tab">My Computer</div>
+      <div class="tab">Internet Explorer</div>
     </div>
-    <div class="content" id="winContent">
-      <p> This is Meowgli.fyi. explore, find easter eggs, and have fun!</p>
-      <pre class="ascii-art">
-    db         db
-    dpqb       dp8b
-    8b qb_____dp_88
-    88/ .        `p
-    q'.            \
-   .'.  .-.    ,-.  `--.
-   |.  / 0 \  / 0 \ |   \
-   |.  `.__   ___.' | \\/
-   |.       "       | (
-    \.    `-'-'    ,' |
-   _/`------------'. .|
-  /.  \\::(::[];)||.. \
- /.  ' \.`:;;;;'''/`. .|
-|.   |/ `;--._.__/  |..|
-|.  _/_,'''',,`.    `:.'
-|.     ` / ,  ',`.   |/      
- \.   -'/\/     ',\  |\          
-  /\__-' /\ /     ,. |.\        
- /. .|  '  /-.    ,: |..\
-:.  .|    /| | ,  ,||. ..:
-|.  .`     | '//` ,:|.  .|
-|..  .\      //\/ ,|.  ..|
- \.   .\     <./  ,'. ../
-  \_ ,..`.__    _,..,._/
-    `\|||/  `--'\|||/'  
-      </pre>
+    <div class="system-tray">
+      <div class="tray-icon"></div>
+      <div class="tray-icon"></div>
+      <span>3:45 PM</span>
     </div>
   </div>
 
-  <script>
-    // Window elements
-    const win = document.getElementById("xpWindow");
-    const content = document.getElementById("winContent");
-    const minBtn = document.querySelector('[aria-label="Minimize"]');
-    const maxBtn = document.querySelector('[aria-label="Restore"]');
-    const closeBtn = document.querySelector('[aria-label="Close"]');
-
-    let isMaximized = false;
-    let isDragging = false;
-    let offsetX, offsetY;
-    let origX = 100, origY = 100, origWidth = 600, origHeight;
-
-    // Dragging
-    win.querySelector(".title-bar").addEventListener("mousedown", e => {
-      isDragging = true;
-      offsetX = e.clientX - win.offsetLeft;
-      offsetY = e.clientY - win.offsetTop;
-      win.style.zIndex = ++zIndex;
-    });
-
-    document.addEventListener("mousemove", e => {
-      if (isDragging && !isMaximized) {
-        win.style.left = e.clientX - offsetX + "px";
-        win.style.top = e.clientY - offsetY + "px";
-      }
-    });
-
-    document.addEventListener("mouseup", () => isDragging = false);
-
-    // Minimize
-    minBtn.addEventListener("click", () => {
-      win.classList.add("hidden");
-      setTimeout(() => win.style.display = "none", 250);
-    });
-
-    // Maximize / Restore
-    maxBtn.addEventListener("click", () => {
-      if (!isMaximized) {
-        origWidth = win.offsetWidth;
-        origHeight = win.offsetHeight;
-        origX = win.offsetLeft;
-        origY = win.offsetTop;
-
-        win.style.position = "fixed";
-        win.style.top = "0";
-        win.style.left = "0";
-        win.style.width = "100%";
-        win.style.height = "100%";
-        content.style.height = "calc(100% - 28px)";
-        content.style.overflow = "auto";
-        isMaximized = true;
-      } else {
-        win.style.position = "absolute";
-        win.style.top = origY + "px";
-        win.style.left = origX + "px";
-        win.style.width = origWidth + "px";
-        win.style.height = origHeight + "px";
-        content.style.height = "auto";
-        isMaximized = false;
-      }
-    });
-
-    // Close
-    closeBtn.addEventListener("click", () => {
-      win.classList.add("hidden");
-      setTimeout(() => win.style.display = "none", 250);
-    });
-
-    // Z-index for multiple windows
-    let zIndex = 10;
-    win.addEventListener("mousedown", () => {
-      win.style.zIndex = ++zIndex;
-    });
-  </script>
 </body>
 </html>
-
