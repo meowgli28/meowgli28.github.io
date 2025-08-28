@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Windows XP Web</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Windows XP Taskbar</title>
   <style>
     body {
       margin: 0;
       height: 100vh;
-      font-family: Tahoma, Verdana, sans-serif;
       background: url('https://i.imgur.com/8IuucQZ.jpeg') no-repeat center center fixed;
       background-size: cover;
+      font-family: Tahoma, Verdana, sans-serif;
       overflow: hidden;
     }
 
@@ -20,71 +20,68 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 40px;
-      background: linear-gradient(#245edc, #1a47a0);
-      border-top: 2px solid #0a2e6f;
+      height: 32px;
+      background: #c0c0c0;
+      border-top: 1px solid #888;
       display: flex;
       align-items: center;
-      padding: 0 8px;
-      color: white;
-      box-shadow: 0 -2px 4px rgba(0,0,0,0.4);
+      font-size: 12px;
     }
 
     /* Start button */
     .start-button {
       display: flex;
       align-items: center;
-      background: linear-gradient(#4ea24e, #317031);
-      border: 2px solid #0a2e6f;
-      border-radius: 4px;
-      padding: 4px 12px;
+      gap: 4px;
+      background: #e0e0e0;
+      border: 1px solid #888;
+      border-radius: 2px;
+      margin: 2px;
+      padding: 2px 8px;
       font-weight: bold;
-      font-size: 14px;
-      color: white;
       cursor: pointer;
-      margin-right: 12px;
+    }
+
+    .start-button img {
+      width: 16px;
+      height: 16px;
     }
 
     .start-button:hover {
-      background: linear-gradient(#5cb85c, #3a7a3a);
+      background: #f2f2f2;
     }
 
-    /* Taskbar apps (empty tabs look) */
+    /* Taskbar buttons area */
     .taskbar-tabs {
-      display: flex;
       flex: 1;
-      gap: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0 6px;
     }
 
     .tab {
-      background: #d4d0c8;
+      background: #e0e0e0;
       border: 1px solid #888;
-      border-radius: 2px;
-      padding: 4px 10px;
-      color: black;
-      font-size: 13px;
+      padding: 2px 10px;
       cursor: pointer;
-      box-shadow: inset 1px 1px white;
     }
 
     .tab:hover {
-      background: #ffffff;
+      background: #f2f2f2;
     }
 
-    /* System tray (right side) */
+    /* System tray */
     .system-tray {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 12px;
+      padding-right: 10px;
     }
 
-    .tray-icon {
+    .system-tray img {
       width: 16px;
       height: 16px;
-      background: white;
-      border: 1px solid #333;
-      border-radius: 3px;
     }
   </style>
 </head>
@@ -92,15 +89,25 @@
 
   <!-- Taskbar -->
   <div class="taskbar">
-    <div class="start-button">Start</div>
+    <!-- Start button -->
+    <div class="start-button">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/5/5f/Windows_logo_-_2002.svg" alt="Start">
+      Start
+    </div>
+
+    <!-- Taskbar tabs -->
     <div class="taskbar-tabs">
       <div class="tab">My Computer</div>
       <div class="tab">Internet Explorer</div>
     </div>
+
+    <!-- System tray -->
     <div class="system-tray">
-      <div class="tray-icon"></div>
-      <div class="tray-icon"></div>
-      <span>3:45 PM</span>
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733579.png" alt="Twitter">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111370.png" alt="Discord">
+      <img src="https://cdn-icons-png.flaticon.com/512/174/174855.png" alt="Instagram">
+      <img src="https://cdn-icons-png.flaticon.com/512/1384/1384060.png" alt="YouTube">
+      <span>2:50 PM</span>
     </div>
   </div>
 
