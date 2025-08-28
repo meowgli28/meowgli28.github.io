@@ -1,4 +1,4 @@
-<!doctype html> 
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -32,42 +32,43 @@
       pointer-events: none;
     }
 
-    .titlebar {
-      background: linear-gradient(#3a6ea5, #2a4f8a);
-      color: white;
-      padding: 4px 8px;
-      font-weight: bold;
-      border-bottom: 1px solid #0a2e6f;
+    /* New Title Bar */
+    .title-bar {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: linear-gradient(#3a6ea5, #2a4f8a);
+      color: white;
+      font-weight: bold;
+      padding: 4px 8px;
+      border-bottom: 1px solid #0a2e6f;
       border-radius: 4px 4px 0 0;
-      cursor: grab;
       user-select: none;
+      cursor: grab;
     }
 
-    .titlebar:active {
+    .title-bar:active {
       cursor: grabbing;
     }
 
-    .titlebar-buttons {
+    .title-bar-text {
+      font-size: 14px;
+    }
+
+    .title-bar-controls {
       display: flex;
       gap: 4px;
     }
 
-    .btn {
+    .title-bar-controls button {
       width: 18px;
       height: 18px;
       border: 1px solid #0a2e6f;
       background: #d4d0c8;
-      text-align: center;
-      font-size: 12px;
-      line-height: 16px;
       cursor: pointer;
-      user-select: none;
     }
 
-    .btn:hover {
+    .title-bar-controls button:hover {
       background: #ffffff;
     }
 
@@ -81,12 +82,12 @@
 
   <!-- XP Window -->
   <div class="window" id="xpWindow">
-    <div class="titlebar">
-      <span>Welcome to Meowgli.fyi</span>
-      <div class="titlebar-buttons">
-        <div class="btn" id="minBtn">–</div>
-        <div class="btn" id="maxBtn">□</div>
-        <div class="btn" id="closeBtn">×</div>
+    <div class="title-bar">
+      <div class="title-bar-text">A Title Bar</div>
+      <div class="title-bar-controls">
+        <button aria-label="Minimize"></button>
+        <button aria-label="Restore"></button>
+        <button aria-label="Close"></button>
       </div>
     </div>
     <div class="content" id="winContent">
@@ -98,9 +99,9 @@
     // Window elements
     const win = document.getElementById("xpWindow");
     const content = document.getElementById("winContent");
-    const minBtn = document.getElementById("minBtn");
-    const maxBtn = document.getElementById("maxBtn");
-    const closeBtn = document.getElementById("closeBtn");
+    const minBtn = document.querySelector('[aria-label="Minimize"]');
+    const maxBtn = document.querySelector('[aria-label="Restore"]');
+    const closeBtn = document.querySelector('[aria-label="Close"]');
 
     let isMaximized = false;
     let isDragging = false;
@@ -108,7 +109,7 @@
     let origX = 100, origY = 100, origWidth = 600, origHeight;
 
     // Dragging
-    win.querySelector(".titlebar").addEventListener("mousedown", e => {
+    win.querySelector(".title-bar").addEventListener("mousedown", e => {
       isDragging = true;
       offsetX = e.clientX - win.offsetLeft;
       offsetY = e.clientY - win.offsetTop;
