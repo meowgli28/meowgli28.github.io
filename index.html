@@ -1,4 +1,4 @@
-<!doctype html> 
+<!doctype html>  
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -20,6 +20,9 @@
       text-align: center;
       width: 64px;
       user-select: none;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background 0.2s ease;
     }
     .desktop-icon img {
       width: 48px;
@@ -33,6 +36,9 @@
       font-size: 12px;
       text-shadow: 1px 1px 2px black;
       margin-top: 4px;
+    }
+    .desktop-icon:hover {
+      background: rgba(0, 120, 215, 0.4);
     }
 
     /* Taskbar */
@@ -196,6 +202,11 @@
     <span>Hardcore Anarchy</span>
   </div>
 
+  <div class="desktop-icon" id="e621Icon" style="top: 230px; left: 50px;">
+    <img src="./images/e621logo.png" alt="e621">
+    <span>e621</span>
+  </div>
+
   <!-- Taskbar -->
   <div class="taskbar">
     <div class="start-button" id="startBtn">
@@ -266,6 +277,12 @@
     const haIcon = document.getElementById("haIcon");
     haIcon.addEventListener("dblclick", () => {
       window.open("https://hardcoreanarchy.gay/", "_blank");
+    });
+
+    // e621 double click
+    const e621Icon = document.getElementById("e621Icon");
+    e621Icon.addEventListener("dblclick", () => {
+      window.open("https://www.youtube.com/watch?v=X32QFPUl3II&list=RDX32QFPUl3II&start_radio=1", "_blank");
     });
 
     // Clock
